@@ -1,6 +1,3 @@
-// 1 - choosing a number of cells (difficulty level/maze size)
-// 2 - enabling/disabling gravity
-
 const { Engine, 
     Render, 
     Runner, 
@@ -26,6 +23,7 @@ const render = Render.create({
     engine: engine,
     options: {
         wireframes: false,
+        fillStyle: '#4C5270',
         width,
         height
     }
@@ -131,7 +129,7 @@ horizontals.forEach((row, rowIndex) => {
                 label: 'wall',
                 isStatic: true,
                 render: {
-                    fillStyle: 'red'
+                    fillStyle: 'white'
                 }
             }
         );
@@ -153,7 +151,7 @@ verticals.forEach((row, rowIndex) => {
                 isStatic: true,
                 label: 'wall',
                 render: {
-                    fillStyle: 'red'
+                    fillStyle: '#BCECE0'
                 }
             }
         );
@@ -168,10 +166,13 @@ const goal = Bodies.rectangle(
     height - unitLengthY / 2,
     unitLengthX * .7,
     unitLengthY * .7, {
-        isStatic: true,
+        friction: 0,
+        frictionAir: 0,
+        isStatic: false,
+        isSensor: true,
         label: 'goal',
         render: {
-            fillStyle: 'green'
+            fillStyle: '#36EEE0'
         }
     }
 );
@@ -186,7 +187,7 @@ const ball = Bodies.circle(
     ballRadius, {
         label: 'ball',
         render: {
-            fillStyle: 'blue'
+            fillStyle: '#F652A0'
         }
     }
 );
@@ -194,19 +195,19 @@ World.add(world, ball);
 
 document.addEventListener('keydown', event => {
     const { x, y } = ball.velocity;
-    if (event.code === "KeyS") {
+    if (event.code === "KeyS" || event.code === "ArrowDown") {
         Body.setVelocity(ball, { x, y: y + 5});
     }
 
-    if (event.code === "KeyW") {
+    if (event.code === "KeyW" || event.code === "ArrowUp") {
         Body.setVelocity(ball, { x, y: y - 5 })
     }
 
-    if (event.code === "KeyA") {
+    if (event.code === "KeyA" || event.code === "ArrowLeft") {
         Body.setVelocity(ball, { x: x - 5, y });
     }
 
-    if (event.code === "KeyD") {
+    if (event.code === "KeyD" || event.code === "ArrowRight") {
         Body.setVelocity(ball, { x: x + 5, y });
     }
 });
